@@ -35,3 +35,4 @@ React 生命週期函數的呼叫次數和方式、順序會和以往不同，�
 
 ## 參考資料
 - [淺談 React Fiber 及其對 lifecycles 造成的影響](https://blog.techbridge.cc/2018/03/31/react-fiber-and-lifecycle-change/#Fiber-%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E9%BA%BC%EF%BC%9F)
+- [淺談 React Scheduler 任務管理](https://zhuanlan.zhihu.com/p/48254036)
