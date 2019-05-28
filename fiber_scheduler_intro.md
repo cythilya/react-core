@@ -47,6 +47,33 @@ getCurrentTime = function() {
 
 因此，在剛加入佇列的時候，一個任務的過期時間就是 `Performance.now() + timeout`（[原始碼](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L302)）。當隨著時間推進而接近過期時間時，優先順序就會跟著提高；當過期時間小於當前時間時，就會變成最高優先執行的任務。而必須被馬上執行。
 
+任務會以環狀佇列的方式存放，並使用 `unstable_scheduleCallback` 將任務以「過期時間」來排序，愈接近過期時間的優先權愈高。
+
+- priorityLevel
+- callback
+- deprecated_options
+
+```javascript
+function unstable_scheduleCallback(
+  priorityLevel,
+  callback,
+  deprecated_options,
+) {
+  // ...
+}
+```
+
+## 執行任務
+將任務依照過期時間排序好後，準備開始執行任務，這也就是 `ensureHostCallbackIsScheduled` 的功能。
+
+- 第一個任務應立即執行。
+- 新加入的任務取代先前的第一個節點時，應停止先前的任務，改執行這個新加入的第一個任務。
+
+`ensureHostCallbackIsScheduled` 用來在 idle 時選擇適合執行的任務。
+
+## 在空閒時要做什麼？
+利用瀏覽器在每一幀繪製完成的空閒時間做事情，亦即使用 `requestIdleCallback pollyfill` 在空閒時間做事情。目前是使用 `requestAnimationFrame` + `MessageChannel` 實作了 `requestIdleCallback`。
+
 ## References
 - [React Scheduler 源碼詳解（1）](https://juejin.im/post/5c32c0c86fb9a049b7808665)
 
