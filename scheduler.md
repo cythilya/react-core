@@ -15,7 +15,15 @@
 
 ### 環狀佇列（circular queue）
 
-待補。
+如下圖所示，每個節點都會有 previous 和 next 兩個指標，分別指向前一個和後一個節點。因為這個佇列是循環的，所以第一個節點的 previous 會指向最後一個節點，而最後一個節點的 next 會指向第一個節點，這麼做的好處是在往前和往後的查找過程中，不需要特別判斷是否到頭或是到尾了，反正就是一直走就對了。
+
+![circular queue](https://cythilya.github.io/assets/react-core/circular_queue_initial.png)
+
+![circular queue](https://cythilya.github.io/assets/react-core/circular_queue_insert_1.png)
+
+![circular queue](https://cythilya.github.io/assets/react-core/circular_queue_insert_5.png)
+
+![circular queue](https://cythilya.github.io/assets/react-core/circular_queue_insert_99.png)
 
 ### 取得目前時間
 
