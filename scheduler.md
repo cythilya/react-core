@@ -19,7 +19,7 @@
 
 ![circular queue](https://cythilya.github.io/assets/react-core/circular_queue_initial.png)
 
-插入 1。
+插入 1，後續修改如下。
 
 - 由於 1 < 2，因此 1 成為 firstNode，1 的 previous 指向 98，1 的 next 指向 2。
 - 2 的 previous 指向 1。
@@ -27,7 +27,7 @@
 
 ![circular queue](https://cythilya.github.io/assets/react-core/circular_queue_insert_1.png)
 
-插入 5。
+插入 5，後續修改如下。
 
 - 由於 5 < 6，因此 5 的 previous 指向 4，5 的 next 指向 6。
 - 6 的 previous 指向 5。
@@ -35,7 +35,7 @@
 
 ![circular queue](https://cythilya.github.io/assets/react-core/circular_queue_insert_5.png)
 
-插入 99。
+插入 99，後續修改如下。
 
 - 由於沒有一個節點比 99 大，因此 99 要放在最後一個，99 的 previous 指向 98，99 的 next 指向 1。
 - 1 的 previous 指向 99。
