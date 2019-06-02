@@ -15,15 +15,41 @@
 
 ### 環狀佇列（circular queue）
 
-如下圖所示，每個節點都會有 previous 和 next 兩個指標，分別指向前一個和後一個節點。因為這個佇列是循環的，所以第一個節點的 previous 會指向最後一個節點，而最後一個節點的 next 會指向第一個節點，這麼做的好處是在往前和往後的查找過程中，不需要特別判斷是否到頭或是到尾了，反正就是一直走就對了。
+如下圖所示，元素排序的順序是由小到大，firstNode 指向第一個節點，而每個節點都會有 previous 和 next 兩個指標，分別指向前一個和後一個節點。因為這個佇列是循環的，所以第一個節點的 previous 會指向最後一個節點，而最後一個節點的 next 會指向第一個節點，這麼做的好處是在往前和往後的查找過程中，不需要特別判斷是否到頭或是到尾了，反正就是一直走就對了。
 
 ![circular queue](https://cythilya.github.io/assets/react-core/circular_queue_initial.png)
 
+插入 1。
+
+- 由於 1 < 2，因此 1 成為 firstNode，1 的 previous 指向 98，1 的 next 指向 2。
+- 2 的 previous 指向 1。
+- 98 的 next 指向 1。
+
 ![circular queue](https://cythilya.github.io/assets/react-core/circular_queue_insert_1.png)
+
+插入 5。
+
+- 由於 5 < 6，因此 5 的 previous 指向 4，5 的 next 指向 6。
+- 6 的 previous 指向 5。
+- 4 的 next 指向 5。
 
 ![circular queue](https://cythilya.github.io/assets/react-core/circular_queue_insert_5.png)
 
+插入 99。
+
+- 由於沒有一個節點比 99 大，因此 99 要放在最後一個，99 的 previous 指向 98，99 的 next 指向 1。
+- 1 的 previous 指向 99。
+- 98 的 next 指向 99。
+
 ![circular queue](https://cythilya.github.io/assets/react-core/circular_queue_insert_99.png)
+
+若要刪除節點，都只能刪除第一個，然後將原先第二個節點設為 firstNode，並重新配置前後節點的 next 與 previous。
+
+來看虛擬碼。
+
+```javascript
+// 待補
+```
 
 ### 取得目前時間
 
