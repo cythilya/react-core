@@ -1,6 +1,6 @@
 # Scheduler 任務調度器
 
-這個模組的主要功能是處理任務的調度，也就是如何找到適合的時機去執行任務。
+這個模組的主要功能是處理任務的調度，也就是如何找到適合的時機去執行特定任務。
 
 ## 名詞解釋
 
@@ -33,7 +33,7 @@
 
 ### 第一步：決定任務的優先順序
 
-分為五種優先順序：最高、使用者定義的次高、一般、低、閒置 ，（[原始碼](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L21)）。
+分為五種優先順序：最高、使用者定義的次高、一般、低、閒置，（[原始碼](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L21)）。
 
 ```javascript
 var ImmediatePriority = 1; // 最高
