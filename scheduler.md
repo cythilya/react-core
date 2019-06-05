@@ -45,10 +45,64 @@
 
 若要刪除節點，都只能刪除第一個，然後將原先第二個節點設為 firstNode，並重新配置前後節點的 next 與 previous。
 
-來看虛擬碼。
+下面來看虛擬碼，或參考（[原始碼](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L302)）。
 
 ```javascript
-// 待補
+interface Node {
+  id: number,
+  priorityLevel: number,
+  expirationTime: number,
+  previous: Node,
+  next: Node,
+};
+let firstNode = null; // 初始狀態是空的串列
+
+function insertNode(newNode: Node) {
+  if (!firstNode) {
+    // 由於一開始是空的串列，因此第一個節點指向前一個和下一個的指標都會指向自己
+    firstNode = newNode.previous = newNode.next = newNode;
+  } else { // 串列不為空，因此要為新來的節點找適合的位置
+    let node = null; // 記錄目前查找的節點
+    let next = null; // 記錄會插到哪一個節點的前面
+
+    do {
+      if (newNode.expirationTime < node.expirationTime) {
+        next = node;
+        break;
+      }
+      node = node.next;
+    } while (node !== firstNode) // 避免無限循環查找，因此若回到第一個節點就停下來
+
+    if (next === firstNode) { // 新來的節點比第一個節點小，因此新來的節點要插在第一個節點之前，亦即新來的節點成為第一個節點
+      firstNode = newNode;
+    } else if (next === null) { // 找了一圈都沒有找到，代表新加入的節點比所有節點的 expirationTime 都大，因此要排在最後面
+      next = firstNode;
+    }
+
+    // 重新安排節點的順序，目前狀況：previous -- newNode -- next
+    let previous = next.previous;
+    previous.next = next.previous = newNode;
+    newNode.previous = previous;
+    newNode.next = next;
+  }
+}
+
+function deleteFirstNode() {
+  let last = null;
+  let next = null;
+
+  if (firstNode === null) { // 佇列中沒有節點
+    return false;
+  }
+
+  if (firstNode === firstNode.next) { // 佇列中只有一個節點
+    firstNode = null;
+  } else { // 指定第二個節點為新的 firstNode
+    last = firstNode.previous; // 找到最後一個節點
+    firstNode = last.next = next; // 重新配置第一個節點為原先的第二的節點，並將最後一個節點的 next 指向新的第一個節點
+    firstNode.previous = next.previous = last; // 重新配置第一個節點的 previous 指向最後一個節點
+  }
+}
 ```
 
 ### 取得目前時間
