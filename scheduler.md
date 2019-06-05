@@ -45,10 +45,39 @@
 
 若要刪除節點，都只能刪除第一個，然後將原先第二個節點設為 firstNode，並重新配置前後節點的 next 與 previous。
 
-來看虛擬碼。
+下面來看虛擬碼，或參考（[原始碼](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L302)）。
 
 ```javascript
-// 待補
+interface Node {
+  id: number,
+  priorityLevel: number,
+  expirationTime: number,
+  previous: Node,
+  next: Node,
+};
+let firstNode = null; // 初始狀態是空的串列
+
+function insertNode(newNode: Node) {
+  if (!firstNode) {
+    // 由於一開始是空的串列，因此第一個節點指向前一個和下一個的指標都會指向自己
+    firstNode = newNode.previous = newNode.next = newNode;
+  } else { // 串列不為空，因此要為新來的節點找適合的位置
+    let node = null; // 記錄目前查找的節點
+    let next = null; // 記錄會插到哪一個節點的前面
+
+    do {
+      if (newNode.expirationTime < node.expirationTime) {
+        next = node;
+        break;
+      }
+      node = node.next;
+    } while (node !== firstNode) // 避免無限循環查找，因此若回到第一個節點就停下來
+  }
+}
+
+function deleteFirstNode() {
+ // ...
+}
 ```
 
 ### 取得目前時間
