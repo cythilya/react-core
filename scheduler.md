@@ -88,7 +88,20 @@ function insertNode(newNode: Node) {
 }
 
 function deleteFirstNode() {
- // ...
+  let last = null;
+  let next = null;
+
+  if (firstNode === null) { // 佇列中沒有節點
+    return false;
+  }
+
+  if (firstNode === firstNode.next) { // 佇列中只有一個節點
+    firstNode = null;
+  } else { // 指定第二個節點為新的 firstNode
+    last = firstNode.previous; // 找到最後一個節點
+    firstNode = last.next = next; // 重新配置第一個節點為原先的第二的節點，並將最後一個節點的 next 指向新的第一個節點
+    firstNode.previous = next.previous = last; // 重新配置第一個節點的 previous 指向最後一個節點
+  }
 }
 ```
 
