@@ -72,6 +72,18 @@ function insertNode(newNode: Node) {
       }
       node = node.next;
     } while (node !== firstNode) // 避免無限循環查找，因此若回到第一個節點就停下來
+
+    if (next === firstNode) { // 新來的節點比第一個節點小，因此新來的節點要插在第一個節點之前，亦即新來的節點成為第一個節點
+      firstNode = newNode;
+    } else if (next === null) { // 找了一圈都沒有找到，代表新加入的節點比所有節點的 expirationTime 都大，因此要排在最後面
+      next = firstNode;
+    }
+
+    // 重新安排節點的順序，目前狀況：previous -- newNode -- next
+    let previous = next.previous;
+    previous.next = next.previous = newNode;
+    newNode.previous = previous;
+    newNode.next = next;
   }
 }
 
