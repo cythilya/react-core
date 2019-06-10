@@ -106,8 +106,26 @@ function deleteFirstNode() {
 ```
 
 ### 取得目前時間
+使用 `Performance.now(...)` 取得目前時間，若不支援 `Performance.now(...)`，則使用 `Date.now(...)` 作為 fallback，[原始碼](https://github.com/facebook/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L70)。
 
-`window.performance.now`
+擷取部份程式碼如下
+
+- 變數 [hasNativePerformanceNow](https://github.com/facebook/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L22) 用來判斷是否支援 `Performance.now(...)`。
+- `localDate` 即是 [`Date`](https://github.com/facebook/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L28)，另存變數 `Date` 為 `localDate` 的目的是避免 `Date` 經過 polyfill 而有所衝突。
+
+```javascript
+if (hasNativePerformanceNow) {
+  const Performance = performance;
+  getCurrentTime = function() {
+    return Performance.now();
+  };
+} else {
+  getCurrentTime = function() {
+    return localDate.now();
+  };
+}
+```
+<!-- 以下尚未更新 -->
 
 ### 在下一幀時執行特定任務
 
@@ -198,6 +216,8 @@ function unstable_scheduleCallback(priorityLevel, callback, deprecated_options) 
 <!--
 ```javascript
 ```
+
+
 
 ，（[原始碼](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L)）。
 
