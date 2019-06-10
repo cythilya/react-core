@@ -106,7 +106,7 @@ function deleteFirstNode() {
 ```
 
 ### 取得目前時間
-使用 `Performance.now(...)` 取得目前時間，若不支援 `Performance.now(...)`，則使用 `Date.now(...)` 作為 fallback，（[原始碼](https://github.com/facebook/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L70)）。
+使用 `Performance.now(...)` 取得目前時間，若不支援 `Performance.now(...)`，則使用 `Date.now(...)` 作為 fallback，[原始碼](https://github.com/facebook/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L70)。
 
 擷取部份程式碼如下
 
