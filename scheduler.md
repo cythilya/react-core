@@ -188,15 +188,20 @@ switch (priorityLevel) {
 
 - 接著，任務就依照這個過期時間在環狀佇列中排序，尋找自己適合的位置（[原始碼](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L338)）。而原本在佇列中的任務，當目前時間愈來愈接近過期時間時，優先順序就會愈高；當過期時間小於當前時間時，就會變成最高優先執行的任務。而必須被馬上執行。
 
-### 執行任務
+### 選取任務
+選取佇列中的第一個任務。
+
+將任務依照過期時間排序好後，就要決定選取任務來執行的時機點，這就是 [`scheduleHostCallbackIfNeeded`](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L57) 的功能。
+
+選取任務的時機點
+
+- idle
+- 加入第一個任務時應立即執行。
+- 新加入的任務取代先前的第一個節點時，應停止先前的任務，改執行這個新加入的第一個任務 [requestHostCallback](https://github.com/facebook/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L265)。
 
 <!-- 以下尚未更新 -->
 
-將任務依照過期時間排序好後，準備開始執行任務，這也就是 [`scheduleHostCallbackIfNeeded`](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L57) 的功能。`scheduleHostCallbackIfNeeded` 用來在 idle 時選擇適合執行的任務，或是
-
-- 第一個任務應立即執行。
-- 新加入的任務取代先前的第一個節點時，應停止先前的任務，改執行這個新加入的第一個任務 [requestHostCallback](https://github.com/facebook/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L265)。
-
+### 執行任務
 ## 在空閒時要做什麼？
 
 利用瀏覽器在每一幀繪製完成的空閒時間做事情，亦即使用 `requestIdleCallback pollyfill` 在空閒時間做事情。目前是使用 `requestAnimationFrame` + `MessageChannel` 實作了 `requestIdleCallback`。
