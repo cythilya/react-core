@@ -11,6 +11,15 @@
 - 時間切割（Time slicing）：？
 - 任務的調度：？
 
+## Scheduler 到底在幹嘛？
+
+任務調度的方法，依序為
+
+1. 決定任務的優先順序
+2. 依照過期時間排列優先順序
+3. 選擇任務並執行執行任務
+4. 空閒時？
+
 ## 基礎知識
 
 ### 環狀佇列（circular queue）
@@ -197,11 +206,17 @@ switch (priorityLevel) {
 
 - idle
 - 加入第一個任務時應立即執行。
-- 新加入的任務取代先前的第一個節點時，應停止先前的任務，改執行這個新加入的第一個任務 [requestHostCallback](https://github.com/facebook/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L265)。
+- 新加入的任務取代先前的第一個節點時，應停止先前的任務，改執行這個新加入的第一個任務 [requestHostCallback（先前稱為 requestIdleCallback）](https://github.com/facebook/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L265)。
 
 <!-- 以下尚未更新 -->
+看這一段「requestHostCallback(也就是 requestIdleCallback) 這部分原始碼的實現比較複雜, 可以將其分解為以下幾個重要的步驟(有一些細節點可以看註釋):」
+
+你不知道的 requestIdleCallback
+https://www.jishuwen.com/d/2I9l/zh-tw
 
 ### 執行任務
+requestHostCallback 的功用是在瀏覽器的每一幀的剩餘空閒時間內執行優先度相對較低的任務，也就是再一次選取佇列中的第一個任務。
+
 ## 在空閒時要做什麼？
 
 利用瀏覽器在每一幀繪製完成的空閒時間做事情，亦即使用 `requestIdleCallback pollyfill` 在空閒時間做事情。目前是使用 `requestAnimationFrame` + `MessageChannel` 實作了 `requestIdleCallback`。
@@ -214,18 +229,10 @@ switch (priorityLevel) {
 
 `window.MessageChannel`
 
-## Scheduler 到底在幹嘛？
-
-任務調度的方法，依序為
-
-1. 決定任務的優先順序
-2. 依照過期時間排列優先順序
-3. 選擇任務並執行執行任務
-4. 空閒時？
-
 ## References
 
 - [React Scheduler 源碼詳解（1）](https://juejin.im/post/5c32c0c86fb9a049b7808665)
+- [你不知道的 requestIdleCallback](https://www.jishuwen.com/d/2I9l/zh-tw)
 
 <!--
 ```javascript
