@@ -2,6 +2,13 @@
 
 這個模組的主要功能是處理任務的調度，也就是如何找到適合的時機去執行特定任務。
 
+## 重點
+
+- 優先順序
+- 過期時間
+- requestAnimationFrame
+- requestHostCallback (即 requestIdleCallback)
+
 ## 名詞解釋
 
 - 任務：要執行的工作，Fiber 將 React 渲染的工作切分為一個個任務，透過 Scheduler 來調度任務、控制渲染。
@@ -13,9 +20,19 @@
 
 ## 函式
 
+- requestAnimationFrame：
 - requestHostCallback (即 requestIdleCallback)：在瀏覽器的每一幀的剩餘空閒時間內執行優先度相對較低的任務。
 
+## JavaScript 的執行流程
+
+- Main Thread 負責對 JavaScript 程式碼做解析和編譯，並做執行。
+- 使用事件循環（Event Loop）來做任務的調度。意即利用事件循環的方式達到[共時](https://cythilya.github.io/2018/10/29/asynchrony-now-and-later/#%E5%85%B1%E6%99%82concurrency)的目的，也就是讓兩個以上的行程（process）在同一時間內同時執行，具體作法就是短時間內在任務間切換，或想像成將任務切成更小的子任務來執行，達到同時進行多個任務的錯覺。
+
+https://zhuanlan.zhihu.com/p/48254036#h5o-4
+
 ## Scheduler 到底在幹嘛？
+
+Scheduler 主要工作是管理渲染任務。
 
 任務調度的方法，依序為
 
