@@ -11,6 +11,10 @@
 - 時間切割（Time slicing）：？
 - 任務的調度：？
 
+## 函式
+
+- requestHostCallback (即 requestIdleCallback)：在瀏覽器的每一幀的剩餘空閒時間內執行優先度相對較低的任務。
+
 ## Scheduler 到底在幹嘛？
 
 任務調度的方法，依序為
@@ -198,6 +202,7 @@ switch (priorityLevel) {
 - 接著，任務就依照這個過期時間在環狀佇列中排序，尋找自己適合的位置（[原始碼](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L338)）。而原本在佇列中的任務，當目前時間愈來愈接近過期時間時，優先順序就會愈高；當過期時間小於當前時間時，就會變成最高優先執行的任務。而必須被馬上執行。
 
 ### 選取任務
+
 選取佇列中的第一個任務。
 
 將任務依照過期時間排序好後，就要決定選取任務來執行的時機點，這就是 [`scheduleHostCallbackIfNeeded`](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L57) 的功能。
@@ -209,13 +214,15 @@ switch (priorityLevel) {
 - 新加入的任務取代先前的第一個節點時，應停止先前的任務，改執行這個新加入的第一個任務 [requestHostCallback（先前稱為 requestIdleCallback）](https://github.com/facebook/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L265)。
 
 <!-- 以下尚未更新 -->
+
 看這一段「requestHostCallback(也就是 requestIdleCallback) 這部分原始碼的實現比較複雜, 可以將其分解為以下幾個重要的步驟(有一些細節點可以看註釋):」
 
 你不知道的 requestIdleCallback
 https://www.jishuwen.com/d/2I9l/zh-tw
 
 ### 執行任務
-requestHostCallback 的功用是在瀏覽器的每一幀的剩餘空閒時間內執行優先度相對較低的任務，也就是再一次選取佇列中的第一個任務。
+
+requestHostCallback 的功用是在瀏覽器的每一幀的剩餘空閒時間內執行優先度相對較低的任務，也就是再一次選取佇列中的第一個任務。(主要時間在幹嘛？)
 
 ## 在空閒時要做什麼？
 
@@ -233,6 +240,7 @@ requestHostCallback 的功用是在瀏覽器的每一幀的剩餘空閒時間內
 
 - [React Scheduler 源碼詳解（1）](https://juejin.im/post/5c32c0c86fb9a049b7808665)
 - [你不知道的 requestIdleCallback](https://www.jishuwen.com/d/2I9l/zh-tw)
+- [淺談 React Scheduler 任務管理](https://zhuanlan.zhihu.com/p/48254036)
 
 <!--
 ```javascript
