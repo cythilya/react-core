@@ -20,15 +20,28 @@
 
 ## 函式
 
-- requestAnimationFrame：
-- requestHostCallback (即 requestIdleCallback)：在瀏覽器的每一幀的剩餘空閒時間內執行優先度相對較低的任務。
+- requestAnimationFrame：在一幀的起始時被呼叫，控制執行 JavaScript 工作和頁面渲染。
+- requestHostCallback (即 requestIdleCallback)：在每一幀的剩餘空閒時間內執行優先度相對較低的任務。
 
 ## JavaScript 的執行流程
 
 - Main Thread 負責對 JavaScript 程式碼做解析和編譯，並做執行。
 - 使用事件循環（Event Loop）來做任務的調度。意即利用事件循環的方式達到[共時](https://cythilya.github.io/2018/10/29/asynchrony-now-and-later/#%E5%85%B1%E6%99%82concurrency)的目的，也就是讓兩個以上的行程（process）在同一時間內同時執行，具體作法就是短時間內在任務間切換，或想像成將任務切成更小的子任務來執行，達到同時進行多個任務的錯覺。
 
-https://zhuanlan.zhihu.com/p/48254036#h5o-4
+![JavaScript 的執行流程](https://pic3.zhimg.com/80/v2-25c2c540be7a568a888790feb747d872_hd.jpg)
+
+## 頁面繪製流程
+瀏覽器渲染頁面的過程是： JavaScript 觸發樣式變更 -> 計算元素的最終樣式（Style Calculations） -> 計算可視元素的版面配置（Layout） -> 繪製物件像素圖層（Paint） -> 將圖層依序繪製到畫面上（Composite），而這整個過程會在一幀內完成，並且渲染一幀的時間要在 16.6ms 以內，以達成 60FPS 的目標，保持畫面的流暢度而不卡頓。
+
+![Browser Rendering Pipeline](https://cythilya.github.io/assets/2017-08-26-css-animation/critical_rendering_path.jpg)
+
+下圖說明一幀內要完成的工作，即是執行 JavaScript 工作 -> 渲染頁面（16.6ms 內）-> idle -> ...，可參考 [RIAL 模型](https://cythilya.github.io/2018/07/16/app-lifecycles/)。
+
+![頁面繪製流程](https://pic4.zhimg.com/80/v2-fed824169ed2416c9c93cd784f80c383_hd.jpg)
+
+requestAnimationFrame 在一幀的起始時被呼叫，控制執行 JavaScript 工作和頁面渲染；而在空閒時間時會呼叫 requestIdleCallback 來做一些重要度較低的工作。
+
+React 16 由於瀏覽器兼容性並沒有使用 [requestIdleCallback](https://developer.mozilla.org/zh-TW/docs/Web/API/Window/requestIdleCallback)，而是採用 `requestAnimationFrame` + `MessageChannel` 來 polyfill requestIdleCallback。
 
 ## Scheduler 到底在幹嘛？
 
@@ -36,10 +49,13 @@ Scheduler 主要工作是管理渲染任務。
 
 任務調度的方法，依序為
 
-1. 決定任務的優先順序
-2. 依照過期時間排列優先順序
-3. 選擇任務並執行執行任務
-4. 空閒時？
+1. 決定任務的優先順序。
+2. 依照過期時間排列優先順序。
+3. 選擇任務並執行執行任務。
+4. 空閒時選取優先度較低的任務。
+
+<!-- 從這裡開始 -->
+https://zhuanlan.zhihu.com/p/48254036#h5o-10
 
 ## 基礎知識
 
@@ -230,8 +246,6 @@ switch (priorityLevel) {
 - 加入第一個任務時應立即執行。
 - 新加入的任務取代先前的第一個節點時，應停止先前的任務，改執行這個新加入的第一個任務 [requestHostCallback（先前稱為 requestIdleCallback）](https://github.com/facebook/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L265)。
 
-<!-- 以下尚未更新 -->
-
 看這一段「requestHostCallback(也就是 requestIdleCallback) 這部分原始碼的實現比較複雜, 可以將其分解為以下幾個重要的步驟(有一些細節點可以看註釋):」
 
 你不知道的 requestIdleCallback
@@ -258,7 +272,7 @@ requestHostCallback 的功用是在瀏覽器的每一幀的剩餘空閒時間內
 - [React Scheduler 源碼詳解（1）](https://juejin.im/post/5c32c0c86fb9a049b7808665)
 - [你不知道的 requestIdleCallback](https://www.jishuwen.com/d/2I9l/zh-tw)
 - [淺談 React Scheduler 任務管理](https://zhuanlan.zhihu.com/p/48254036)
-
+- [瀏覽器的 16ms 渲染幀](https://harttle.land/2017/08/15/browser-render-frame.html)
 <!--
 ```javascript
 ```
