@@ -4,24 +4,17 @@
 
 ## 重點
 
-- 優先順序
-- 過期時間
-- requestAnimationFrame
-- requestHostCallback (即 requestIdleCallback)
+- 優先順序：每個任務都會被標註一個重要程度。
+- 過期時間：每個任務會依照重要程度給予對應的過期時間。
+- requestAnimationFrame：在每一幀的起始時被呼叫以執行優先度較高的任務，用於控制執行 JavaScript 工作和頁面渲染。（？補執行哪一類的任務？）
+- requestHostCallback (即先前版本的 requestIdleCallback)：在每一幀的剩餘空閒時間內執行優先度相對較低的任務。（？補執行哪一類的任務？）
 
 ## 名詞解釋
 
-- 任務：要執行的工作，Fiber 將 React 渲染的工作切分為一個個任務，透過 Scheduler 來調度任務、控制渲染。
-- 優先順序：每個任務會給予一個重要程度的標示，這個重要程度會對應一個過期時間。
-- 過期時間：任務的到期時間，其中，過期時間 = 起始時間 + 依據優先順序所給定的過期時間。
+- 任務：要執行的工作，Fiber 將 React 計算和渲染的工作切分為一個個的任務，透過 Scheduler 來調度與執行任務。（？補哪一類的任務？）
+- 優先順序：每個任務會標記其重要程度，這個重要程度會對應一個過期時間。
+- 過期時間：任務的到期時間，其中，到期時間 = 起始時間 + 依據優先順序所給定的過期時間。
 - 環狀佇列：串連任務的資料結構。
-- 時間切割（Time slicing）：？
-- 任務的調度：？
-
-## 函式
-
-- requestAnimationFrame：在一幀的起始時被呼叫，控制執行 JavaScript 工作和頁面渲染。
-- requestHostCallback (即 requestIdleCallback)：在每一幀的剩餘空閒時間內執行優先度相對較低的任務。
 
 ## JavaScript 的執行流程
 
