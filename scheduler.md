@@ -18,8 +18,11 @@
 
 ## JavaScript 的執行流程
 
-- Main Thread 負責對 JavaScript 程式碼做解析和編譯，並做執行。
-- 使用事件循環（Event Loop）來做任務的調度。意即利用事件循環的方式達到[共時](https://cythilya.github.io/2018/10/29/asynchrony-now-and-later/#%E5%85%B1%E6%99%82concurrency)的目的，也就是讓兩個以上的行程（process）在同一時間內同時執行，具體作法就是短時間內在任務間切換，或想像成將任務切成更小的子任務來執行，達到同時進行多個任務的錯覺。
+- Main Thread 負責對 JavaScript 程式碼做解析、編譯和執行。
+- 使用事件循環（Event Loop）來做任務的調度。也就是說，利用事件循環的方式達到[共時](https://cythilya.github.io/2018/10/29/asynchrony-now-and-later/#%E5%85%B1%E6%99%82concurrency)的目的，具體作法是讓兩個以上的行程（process）交錯執行，或是將任務切成更小的子任務，以達到同時執行多個任務的錯覺。
+
+（？補 Main Thread 和 Scheduler 的關係？）
+（？補 Main Thread 和 Event Loop 的關係？）
 
 ![JavaScript 的執行流程](https://pic3.zhimg.com/80/v2-25c2c540be7a568a888790feb747d872_hd.jpg)
 
