@@ -7,7 +7,7 @@
 - 優先順序：每個任務都會被標註一個重要程度。
 - 過期時間：每個任務會依照重要程度給予對應的過期時間。
 - requestAnimationFrame：在每一幀的起始時被呼叫以執行優先度較高的任務，用於控制執行 JavaScript 工作和頁面渲染。（？補執行哪一類的任務？）
-- requestHostCallback (即先前版本的 requestIdleCallback)：在每一幀的剩餘空閒時間內執行優先度相對較低的任務。（？補執行哪一類的任務？）
+- requestHostCallback (即先前版本的 requestIdleCallback)：在每一幀的剩餘空閒時間內執行背景工作或優先度相對較低的任務。（？補執行哪一類的任務？）
 
 ## 名詞解釋
 
@@ -39,13 +39,19 @@
 
 這整個過程會在一幀內完成，並且渲染一幀的時間要在 16.6ms 以內，以達成 60FPS 的目標，保持畫面的流暢、不卡頓。
 
-下圖說明一幀內要完成的工作，即是執行 JavaScript 工作 -> 渲染頁面（16.6ms 內）-> idle -> ...，可參考 [RIAL 模型](https://cythilya.github.io/2018/07/16/app-lifecycles/)。
+那麼，要如何分配這些工作在一幀內完成呢？或說，一幀內到到底會做哪些事情呢？（可參考 [RIAL 模型](https://cythilya.github.io/2018/07/16/app-lifecycles/)）
+
+- Run Task：執行 JavaScript 的計算。
+- Update Rendering：渲染頁面（要在 16.6ms 內完成，以維持畫面流暢）。
+- Idle Period：執行背景工作或低優先度的工作。
 
 ![頁面繪製流程](https://pic4.zhimg.com/80/v2-fed824169ed2416c9c93cd784f80c383_hd.jpg)
 
+再來，是誰來選擇和執行任務呢？
+
 requestAnimationFrame 在一幀的起始時被呼叫，控制執行 JavaScript 工作和頁面渲染；而在空閒時間時會呼叫 requestIdleCallback 來做一些重要度較低的工作。
 
-React 16 由於瀏覽器兼容性並沒有使用 [requestIdleCallback](https://developer.mozilla.org/zh-TW/docs/Web/API/Window/requestIdleCallback)，而是採用 `requestAnimationFrame` + `MessageChannel` 來 polyfill requestIdleCallback。
+注意，在 React 16 由於瀏覽器兼容性並沒有使用 [requestIdleCallback](https://developer.mozilla.org/zh-TW/docs/Web/API/Window/requestIdleCallback)，而是採用 `requestAnimationFrame` + `MessageChannel` 來 polyfill requestIdleCallback。
 
 ## Scheduler 到底在幹嘛？
 
