@@ -43,7 +43,7 @@
 
 - Run Task：執行 JavaScript 的計算。
 - Update Rendering：渲染頁面（要在 16.6ms 內完成，以維持畫面流暢）。
-- Idle Period：執行背景工作或低優先度的工作。
+- Idle Period：執行背景工作或低優先度的任務。
 
 ![頁面繪製流程](https://pic4.zhimg.com/80/v2-fed824169ed2416c9c93cd784f80c383_hd.jpg)
 
@@ -55,7 +55,7 @@ requestAnimationFrame 在一幀的起始時被呼叫，控制執行 JavaScript �
 
 ## Scheduler 到底在幹嘛？
 
-Scheduler 主要工作是管理渲染任務。
+Scheduler 主要工作是管理渲染任務，也就是在各階段安排以上提到的執行 JavaScript 計算、渲染頁面、在 idele 時執行背景工作或優點度較低的任務。
 
 任務調度的方法，依序為
 
