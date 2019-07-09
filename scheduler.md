@@ -27,9 +27,17 @@
 ![JavaScript 的執行流程](https://pic3.zhimg.com/80/v2-25c2c540be7a568a888790feb747d872_hd.jpg)
 
 ## 頁面繪製流程
-瀏覽器渲染頁面的過程是： JavaScript 觸發樣式變更 -> 計算元素的最終樣式（Style Calculations） -> 計算可視元素的版面配置（Layout） -> 繪製物件像素圖層（Paint） -> 將圖層依序繪製到畫面上（Composite），而這整個過程會在一幀內完成，並且渲染一幀的時間要在 16.6ms 以內，以達成 60FPS 的目標，保持畫面的流暢度而不卡頓。
+瀏覽器渲染頁面的過程是
+
+1. JavaScript 觸發樣式變更
+2. 計算元素的最終樣式（Style Calculations）
+3. 計算可視元素的版面配置（Layout）
+4. 繪製物件像素圖層（Paint）
+5. 將圖層依序繪製到畫面上（Composite）
 
 ![Browser Rendering Pipeline](https://cythilya.github.io/assets/2017-08-26-css-animation/critical_rendering_path.jpg)
+
+這整個過程會在一幀內完成，並且渲染一幀的時間要在 16.6ms 以內，以達成 60FPS 的目標，保持畫面的流暢、不卡頓。
 
 下圖說明一幀內要完成的工作，即是執行 JavaScript 工作 -> 渲染頁面（16.6ms 內）-> idle -> ...，可參考 [RIAL 模型](https://cythilya.github.io/2018/07/16/app-lifecycles/)。
 
