@@ -49,9 +49,9 @@
 
 再來，是誰來選擇和執行任務呢？
 
-requestAnimationFrame 在一幀的起始時被呼叫，控制執行 JavaScript 工作和頁面渲染；而在空閒時間時會呼叫 requestIdleCallback 來做一些重要度較低的工作。
+requestAnimationFrame 在一幀的起始時被呼叫，控制執行 JavaScript 工作和頁面渲染（圖中的 Run Task 和 Update Rendering）；而在空閒時間時會呼叫 requestIdleCallback 來做一些重要度較低的工作（圖中的 Idle Callback）。
 
-注意，在 React 16 由於瀏覽器兼容性並沒有使用 [requestIdleCallback](https://developer.mozilla.org/zh-TW/docs/Web/API/Window/requestIdleCallback)，而是採用 `requestAnimationFrame` + `MessageChannel` 來 polyfill requestIdleCallback。
+注意，在 React 16 由於瀏覽器兼容性並沒有使用原生的 [requestIdleCallback](https://developer.mozilla.org/zh-TW/docs/Web/API/Window/requestIdleCallback)，而是採用 `requestAnimationFrame` + `MessageChannel` 來 polyfill requestIdleCallback。
 
 ## Scheduler 到底在幹嘛？
 
