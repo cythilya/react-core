@@ -68,6 +68,9 @@ Scheduler 主要工作是任務調度，也就是在各階段安排以上提到�
 閱讀源碼
 https://zhuanlan.zhihu.com/p/48254036
 
+會依照元件種類決定優先順序
+/Users/summer_tang/Documents/react-master/packages/react-reconciler/src/ReactFiber.js
+
 ## 基礎知識
 
 ### 環狀佇列（circular queue）
