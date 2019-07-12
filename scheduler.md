@@ -71,6 +71,11 @@ https://zhuanlan.zhihu.com/p/48254036
 會依照元件種類決定優先順序
 /Users/summer_tang/Documents/react-master/packages/react-reconciler/src/ReactFiber.js
 
+https://medium.com/react-in-depth/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react-e1c04700ef6e
+"key
+Unique identifier with a group of children to help React figure out which items have changed, have been added or removed from the list. It’s related to the “lists and keys” functionality of React described here.
+You can find the complete structure of a fiber node here. I’ve omitted a bunch of fields in the explanation above. Particularly, I skipped the pointers child, sibling and return that make up a tree data structure which I described in my previous article. And a category of fields like expirationTime, childExpirationTime and mode that are specific to Scheduler."
+
 ## 基礎知識
 
 ### 環狀佇列（circular queue）
