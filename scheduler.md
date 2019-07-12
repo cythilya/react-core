@@ -71,6 +71,8 @@ https://zhuanlan.zhihu.com/p/48254036
 會依照元件種類決定優先順序
 /Users/summer_tang/Documents/react-master/packages/react-reconciler/src/ReactFiber.js
 
+https://medium.com/react-in-depth/the-how-and-why-on-reacts-usage-of-linked-list-in-fiber-67f1014d0eb7?
+
 https://medium.com/react-in-depth/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react-e1c04700ef6e
 "key
 Unique identifier with a group of children to help React figure out which items have changed, have been added or removed from the list. It’s related to the “lists and keys” functionality of React described here.
