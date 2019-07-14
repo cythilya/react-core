@@ -27,6 +27,7 @@
 ![JavaScript 的執行流程](https://pic3.zhimg.com/80/v2-25c2c540be7a568a888790feb747d872_hd.jpg)
 
 ## 頁面繪製流程
+
 瀏覽器渲染頁面的過程是
 
 1. JavaScript 觸發樣式變更
@@ -63,20 +64,6 @@ Scheduler 主要工作是任務調度，也就是在各階段安排以上提到�
 2. 依照過期時間排列優先順序。
 3. 選擇任務並執行任務，並且可以隨時暫停任務，達到避免任務長時間佔用 Main Thread 的問題。（？隨時暫停某一個組件的渲染？）
 4. 空閒時選取優先度較低的任務。
-
-<!-- 從這裡開始 -->
-閱讀源碼
-https://zhuanlan.zhihu.com/p/48254036
-
-會依照元件種類決定優先順序
-/Users/summer_tang/Documents/react-master/packages/react-reconciler/src/ReactFiber.js
-
-https://medium.com/react-in-depth/the-how-and-why-on-reacts-usage-of-linked-list-in-fiber-67f1014d0eb7?
-
-https://medium.com/react-in-depth/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react-e1c04700ef6e
-"key
-Unique identifier with a group of children to help React figure out which items have changed, have been added or removed from the list. It’s related to the “lists and keys” functionality of React described here.
-You can find the complete structure of a fiber node here. I’ve omitted a bunch of fields in the explanation above. Particularly, I skipped the pointers child, sibling and return that make up a tree data structure which I described in my previous article. And a category of fields like expirationTime, childExpirationTime and mode that are specific to Scheduler."
 
 ## 基礎知識
 
@@ -294,10 +281,26 @@ requestHostCallback 的功用是在瀏覽器的每一幀的剩餘空閒時間內
 - [你不知道的 requestIdleCallback](https://www.jishuwen.com/d/2I9l/zh-tw)
 - [淺談 React Scheduler 任務管理](https://zhuanlan.zhihu.com/p/48254036)
 - [瀏覽器的 16ms 渲染幀](https://harttle.land/2017/08/15/browser-render-frame.html)
-<!--
+  <!--
+
 ```javascript
 ```
 
 ，（[原始碼](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L)）。
 
 -->
+
+會依照元件種類決定優先順序
+/Users/summer_tang/Documents/react-master/packages/react-reconciler/src/ReactFiber.js
+
+https://medium.com/react-in-depth/the-how-and-why-on-reacts-usage-of-linked-list-in-fiber-67f1014d0eb7?
+
+https://medium.com/react-in-depth/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react-e1c04700ef6e
+"key
+Unique identifier with a group of children to help React figure out which items have changed, have been added or removed from the list. It’s related to the “lists and keys” functionality of React described here.
+You can find the complete structure of a fiber node here. I’ve omitted a bunch of fields in the explanation above. Particularly, I skipped the pointers child, sibling and return that make up a tree data structure which I described in my previous article. And a category of fields like expirationTime, childExpirationTime and mode that are specific to Scheduler."
+
+<!-- 從這裡開始 -->
+
+閱讀源碼
+https://zhuanlan.zhihu.com/p/48254036
