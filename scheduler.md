@@ -92,14 +92,14 @@ Scheduler 主要工作是任務調度，也就是在各階段安排以上提到�
 插入 99，後續修改如下。
 
 - 由於沒有一個節點比 99 大，因此 99 要放在最後一個，99 的 previous 指向 98，99 的 next 指向 1。
-- 1 的 previous 指向 99。
+- 2 的 previous 指向 99。
 - 98 的 next 指向 99。
 
 ![circular queue](https://cythilya.github.io/assets/react-core/circular_queue_insert_99.png)
 
 若要刪除節點，都只能刪除第一個，然後將原先第二個節點設為 firstNode，並重新配置前後節點的 next 與 previous。
 
-下面來看虛擬碼，或參考（[原始碼](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L302)）。
+下面來看虛擬碼。
 
 ```javascript
 interface Node {
@@ -165,9 +165,14 @@ function deleteFirstNode() {
 }
 ```
 
+或參考原始碼
+
+- [insertScheduledTask](https://github.com/cythilya/react/blob/master/packages/scheduler/src/Scheduler.js#L432）
+- [flushTask](https://github.com/cythilya/react/blob/master/packages/scheduler/src/Scheduler.js#L75)
+
 ### 優先順序
 
-任務會被指定一個優先順序，共分為五種優先順序：最高、使用者定義的次高、一般、低、閒置，（[原始碼](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L21)）。
+任務會被指定一個優先順序，共分為五種優先順序：最高、使用者定義的次高、一般、低、閒置，（[原始碼](https://github.com/cythilya/react/blob/master/packages/scheduler/src/Scheduler.js#L23)）。
 
 ```javascript
 var ImmediatePriority = 1; // 最高
@@ -177,7 +182,7 @@ var LowPriority = 4; // 低
 var IdlePriority = 5; // 閒置
 ```
 
-五種優先順序分別對應五種過期時間，（[原始碼](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L30)）。
+五種優先順序分別對應五種過期時間，（[原始碼](https://github.com/cythilya/react/blob/master/packages/scheduler/src/Scheduler.js#L35)）。
 
 在 V8 32-bit system 中，最大的正整數是 `2 ^ 30 - 1 = 1073741823`，用來設定「IDLE_PRIORITY」永不過期的過期時間。
 
