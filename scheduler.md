@@ -203,34 +203,12 @@ var IDLE_PRIORITY = maxSigned31BitInt; // 永不過期
 
 ### 時間
 
-請參考 [unstable_scheduleCallback](https://github.com/cythilya/react/blob/master/packages/scheduler/src/Scheduler.js#L373)，這裡主要做以下這些事情...
+請參考 [unstable_scheduleCallback](https://github.com/cythilya/react/blob/master/packages/scheduler/src/Scheduler.js#L373)，這裡主要是計算過期時間，而過期時間 (expirationTime) = 起始時間 (startTime) + 依照優先順序給訂的過期時間（timeout）。例如，若瀏覽器已打開 1 秒，startTime 是 1000ms 且優先順序為 NormalPriority 給定的過期時間是 5000ms，因此過期時間就是 1000 + 5000 = 6000ms。
 
-- 在 getCurrentTime 使用 `Performance.now(...)` 取得目前時間，若不支援 `Performance.now(...)`，則使用 `Date.now(...)` 作為 fallback，其中使用變數 [hasNativePerformanceNow](https://github.com/cythilya/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L75) 用來判斷是否支援 `Performance.now(...)`。
+- 起始時間有兩種，一種是目前時間，另一種是目前時間 (currentTime) + 延遲的時間 (delay)。其中，使用 getCurrentTime 取得目前的時間，而在 getCurrentTime 使用 `Performance.now(...)` 取得目前時間，若不支援 `Performance.now(...)`，則使用 `Date.now(...)` 作為 fallback，[原始碼](https://github.com/cythilya/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L75)。
 - getCurrentTime 中的 `localDate` 即是 [`Date`](https://github.com/facebook/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L28)，另存變數 `Date` 為 `localDate` 的目的是避免 `Date` 經過 polyfill 而有所衝突。
-- 取得目前時間是為了計算起始時間（[startTime](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L307)）。
-- 過期時間（[expirationTime](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L317)）等於 startTime + 依照先前設定的優先順序所給定的過期時間。例如，若瀏覽器已打開 1 秒，startTime 是 1000ms = 1000ms 且優先順序為 NormalPriority 給定的過期時間是 5000ms，因此過期時間就是 1000 + 5000 = 6000ms（[原始碼](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L319)）。
 
-```javascript
-switch (priorityLevel) {
-  case ImmediatePriority:
-    expirationTime = startTime + IMMEDIATE_PRIORITY_TIMEOUT;
-    break;
-  case UserBlockingPriority:
-    expirationTime = startTime + USER_BLOCKING_PRIORITY;
-    break;
-  case IdlePriority:
-    expirationTime = startTime + IDLE_PRIORITY;
-    break;
-  case LowPriority:
-    expirationTime = startTime + LOW_PRIORITY_TIMEOUT;
-    break;
-  case NormalPriority:
-  default:
-    expirationTime = startTime + NORMAL_PRIORITY_TIMEOUT;
-}
-```
-
-- 接著，任務就依照這個過期時間在環狀佇列中排序，尋找自己適合的位置（[原始碼](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L338)）。而原本在佇列中的任務，當目前時間愈來愈接近過期時間時，優先順序就會愈高；當過期時間小於當前時間時，就會變成最高優先執行的任務。而必須被馬上執行。
+接著，任務就依照這個過期時間在環狀佇列中排序，尋找自己適合的位置（[原始碼](https://github.com/cythilya/react/blob/master/packages/scheduler/src/Scheduler.js#L396）。而原本在佇列中的任務，當目前時間愈來愈接近過期時間時，優先順序就會愈高；當過期時間小於當前時間時，就會變成最高優先執行的任務。而必須被馬上執行。
 
 ### 選取任務
 
