@@ -203,25 +203,10 @@ var IDLE_PRIORITY = maxSigned31BitInt; // 永不過期
 
 ### 時間
 
-請參考 [unstable_scheduleCallback](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L302)，這裡主要做以下這些事情...
+請參考 [unstable_scheduleCallback](https://github.com/cythilya/react/blob/master/packages/scheduler/src/Scheduler.js#L373)，這裡主要做以下這些事情...
 
-- 變數 [hasNativePerformanceNow](https://github.com/facebook/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L22) 用來判斷是否支援 `Performance.now(...)`。
-- `localDate` 即是 [`Date`](https://github.com/facebook/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L28)，另存變數 `Date` 為 `localDate` 的目的是避免 `Date` 經過 polyfill 而有所衝突。
-- 使用 `Performance.now(...)` 取得目前時間，若不支援 `Performance.now(...)`，則使用 `Date.now(...)` 作為 fallback（[原始碼](https://github.com/facebook/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L70)）。
-
-```javascript
-if (hasNativePerformanceNow) {
-  const Performance = performance;
-  getCurrentTime = function() {
-    return Performance.now();
-  };
-} else {
-  getCurrentTime = function() {
-    return localDate.now();
-  };
-}
-```
-
+- 在 getCurrentTime 使用 `Performance.now(...)` 取得目前時間，若不支援 `Performance.now(...)`，則使用 `Date.now(...)` 作為 fallback，其中使用變數 [hasNativePerformanceNow](https://github.com/cythilya/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L75) 用來判斷是否支援 `Performance.now(...)`。
+- getCurrentTime 中的 `localDate` 即是 [`Date`](https://github.com/facebook/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L28)，另存變數 `Date` 為 `localDate` 的目的是避免 `Date` 經過 polyfill 而有所衝突。
 - 取得目前時間是為了計算起始時間（[startTime](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L307)）。
 - 過期時間（[expirationTime](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L317)）等於 startTime + 依照先前設定的優先順序所給定的過期時間。例如，若瀏覽器已打開 1 秒，startTime 是 1000ms = 1000ms 且優先順序為 NormalPriority 給定的過期時間是 5000ms，因此過期時間就是 1000 + 5000 = 6000ms（[原始碼](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L319)）。
 
