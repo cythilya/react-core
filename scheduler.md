@@ -212,9 +212,14 @@ var IDLE_PRIORITY = maxSigned31BitInt; // 永不過期
 
 ### 選取任務
 
+<!-- 從這裡開始 -->
+
+閱讀源碼
+https://zhuanlan.zhihu.com/p/48254036
+
 選取佇列中的第一個任務。
 
-將任務依照過期時間排序好後，就要決定選取任務來執行的時機點，這就是 [`scheduleHostCallbackIfNeeded`](https://github.com/facebook/react/blob/master/packages/scheduler/src/Scheduler.js#L57) 的功能。
+將任務依照過期時間排序好後，就要決定選取任務來執行的時機點，這就是 [`requestHostCallback`](https://github.com/cythilya/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L317) 的功能。
 
 選取任務的時機點
 
@@ -267,8 +272,3 @@ https://medium.com/react-in-depth/inside-fiber-in-depth-overview-of-the-new-reco
 "key
 Unique identifier with a group of children to help React figure out which items have changed, have been added or removed from the list. It’s related to the “lists and keys” functionality of React described here.
 You can find the complete structure of a fiber node here. I’ve omitted a bunch of fields in the explanation above. Particularly, I skipped the pointers child, sibling and return that make up a tree data structure which I described in my previous article. And a category of fields like expirationTime, childExpirationTime and mode that are specific to Scheduler."
-
-<!-- 從這裡開始 -->
-
-閱讀源碼
-https://zhuanlan.zhihu.com/p/48254036
