@@ -213,7 +213,7 @@ var IDLE_PRIORITY = maxSigned31BitInt; // 永不過期
 ### 選取任務
 將任務依照過期時間排序好，接著就要決定任務執行的時機點。
 
-[`requestHostCallback`](https://github.com/cythilya/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L317)（先前稱為 requestIdleCallback）用於選取佇列中的第一個任務來執行。
+[`requestHostCallback`](https://github.com/cythilya/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L317)（先前稱為 requestIdleCallback）用於在重繪完成後，選取佇列中的第一個任務來執行。
 
 選取任務來執行的時機點
 
