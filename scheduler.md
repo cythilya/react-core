@@ -211,10 +211,9 @@ var IDLE_PRIORITY = maxSigned31BitInt; // 永不過期
 接著，任務就依照這個過期時間在環狀佇列中排序，尋找自己適合的位置（[原始碼](https://github.com/cythilya/react/blob/master/packages/scheduler/src/Scheduler.js#L396）。而原本在佇列中的任務，當目前時間愈來愈接近過期時間時，優先順序就會愈高；當過期時間小於當前時間時，就會變成最高優先執行的任務。而必須被馬上執行。
 
 ### 選取任務
+將任務依照過期時間排序好，接著就要決定任務執行的時機點。
 
-選取佇列中的第一個任務來執行。
-
-將任務依照過期時間排序好，接著就要決定任務執行的時機點，這就是 [`requestHostCallback`](https://github.com/cythilya/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L317) （先前稱為 requestIdleCallback）的功能。
+[`requestHostCallback`](https://github.com/cythilya/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L317)（先前稱為 requestIdleCallback）用於選取佇列中的第一個任務來執行。
 
 選取任務來執行的時機點
 
@@ -222,11 +221,20 @@ var IDLE_PRIORITY = maxSigned31BitInt; // 永不過期
 - 加入第一個任務時應立即執行。
 - 新加入的任務取代先前的第一個節點時，應停止先前的任務，改執行這個新加入的任務。
 
+<!-- 從這裡開始 -->
+http://xzfyu.com/2019/01/15/react/react16%E6%BA%90%E7%A0%81/scheduler/
+
+
+getCurrentTime
+requestHostCallback
+cancelHostCallback
+shouldYieldToHost
+
 requestAnimationFrameWithTimeout
 
 ### 執行任務
 
-<!-- 從這裡開始 -->
+
 看這一段「requestHostCallback(也就是 requestIdleCallback) 這部分原始碼的實現比較複雜, 可以將其分解為以下幾個重要的步驟(有一些細節點可以看註釋):」
 
 閱讀源碼
@@ -255,6 +263,7 @@ requestHostCallback 的功用是在瀏覽器的每一幀的剩餘空閒時間內
 - [你不知道的 requestIdleCallback](https://www.jishuwen.com/d/2I9l/zh-tw)
 - [淺談 React Scheduler 任務管理](https://zhuanlan.zhihu.com/p/48254036)
 - [瀏覽器的 16ms 渲染幀](https://harttle.land/2017/08/15/browser-render-frame.html)
+- [scheduler 源碼分析](http://xzfyu.com/2019/01/15/react/react16%E6%BA%90%E7%A0%81/scheduler/)
   <!--
 
 ```javascript
