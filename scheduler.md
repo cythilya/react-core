@@ -216,9 +216,9 @@ var IDLE_PRIORITY = maxSigned31BitInt; // 永不過期
 
 選取任務來執行的時機點
 
-- idle
+- main thread 為 idle 時。
 - 加入第一個任務時應立即執行。
-- 新加入的任務取代先前的第一個節點時，應停止先前的任務，改執行這個新加入的任務。
+- 新加入的任務取代先前的第一個節點時，應停止先前的任務，改執行這個新加入的任務。在此透過 postMessage 實現，並將利用 cancelHostCallback 設定 scheduledHostCallback 為 null 來中斷執行中的任務。
 
 <!-- 從這裡開始 -->
 http://xzfyu.com/2019/01/15/react/react16%E6%BA%90%E7%A0%81/scheduler/
@@ -227,7 +227,7 @@ http://xzfyu.com/2019/01/15/react/react16%E6%BA%90%E7%A0%81/scheduler/
 - requestHostCallback(callback，absoluteTimeout)：在重繪完成後，依照 main thread 與佇列中 task 的狀況，在特定的時機選取適合的任務。
 - getCurrentTime：取得目前時間。
 - cancelHostCallback：取消任務。
-- shouldYieldToHost：判斷任務是否超時、需要被打斷。
+- shouldYieldToHost：比較 frameDeadline 是否小於等於 currentTime，用於判斷任務是否超時、需要被打斷。
 - requestAnimationFrameWithTimeout：封裝 requestAnimationFrame 函數，讓任務在重繪完後才執行，但不做背景執行而改用 setTimeout。
 
 requestHostCallback 的流程。
