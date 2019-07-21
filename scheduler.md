@@ -202,6 +202,7 @@ var IDLE_PRIORITY = maxSigned31BitInt; // 永不過期
 ```
 
 ### 時間
+
 請參考 [unstable_scheduleCallback](https://github.com/cythilya/react/blob/master/packages/scheduler/src/Scheduler.js#L373)，這裡主要是計算過期時間，而過期時間 (expirationTime) = 起始時間 (startTime) + 依照優先順序給訂的過期時間（timeout）。例如，若瀏覽器已打開 1 秒，startTime 是 1000ms 且優先順序為 NormalPriority 給定的過期時間是 5000ms，因此過期時間就是 1000 + 5000 = 6000ms。
 
 - 起始時間有兩種，一種是目前時間，另一種是目前時間 (currentTime) + 延遲的時間 (delay)。其中，使用 getCurrentTime 取得目前的時間，而在 getCurrentTime 使用 `Performance.now(...)` 取得目前時間，若不支援 `Performance.now(...)`，則使用 `Date.now(...)` 作為 fallback，[原始碼](https://github.com/cythilya/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L75)。
@@ -210,6 +211,7 @@ var IDLE_PRIORITY = maxSigned31BitInt; // 永不過期
 接著，任務就依照這個過期時間在環狀佇列中排序，尋找自己適合的位置（[原始碼](https://github.com/cythilya/react/blob/master/packages/scheduler/src/Scheduler.js#L396）。而原本在佇列中的任務，當目前時間愈來愈接近過期時間時，優先順序就會愈高；當過期時間小於當前時間時，就會變成最高優先執行的任務。而必須被馬上執行。
 
 ### 選取任務
+
 將任務依照過期時間排序好，接著就要決定任務執行的時機點。
 
 [`requestHostCallback`](https://github.com/cythilya/react/blob/master/packages/scheduler/src/forks/SchedulerHostConfig.default.js#L317)（先前稱為 requestIdleCallback）用於在重繪完成後，依照 main thread 與佇列中 task 的狀況，在特定的時機選取適合的任務，也就是選取佇列中的第一個任務來執行。
@@ -221,9 +223,11 @@ var IDLE_PRIORITY = maxSigned31BitInt; // 永不過期
 - 新加入的任務取代先前的第一個節點時，應停止先前的任務，改執行這個新加入的任務。在此透過 postMessage 實現，並將利用 cancelHostCallback 設定 scheduledHostCallback 為 null 來中斷執行中的任務。
 
 <!-- 從這裡開始 -->
+
 http://xzfyu.com/2019/01/15/react/react16%E6%BA%90%E7%A0%81/scheduler/
 
 ### 執行任務
+
 - requestHostCallback(callback，absoluteTimeout)：在重繪完成後，依照 main thread 與佇列中 task 的狀況，在特定的時機選取適合的任務。
 - getCurrentTime：取得目前時間。
 - cancelHostCallback：取消任務。
@@ -235,6 +239,8 @@ requestHostCallback 的流程。
 ![requestHostCallback 的流程](http://xzfyu.com/2019/01/15/react/react16%E6%BA%90%E7%A0%81/scheduler/requestHostCallback%E6%B5%81%E7%A8%8B%E5%9B%BE.png)
 
 看這一段「requestHostCallback(也就是 requestIdleCallback) 這部分原始碼的實現比較複雜, 可以將其分解為以下幾個重要的步驟(有一些細節點可以看註釋):」
+
+追程式碼 schedular.development.js
 
 閱讀源碼
 https://zhuanlan.zhihu.com/p/48254036
