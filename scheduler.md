@@ -240,7 +240,9 @@ requestHostCallback 的流程。
 
 看這一段「requestHostCallback(也就是 requestIdleCallback) 這部分原始碼的實現比較複雜, 可以將其分解為以下幾個重要的步驟(有一些細節點可以看註釋):」
 
-追程式碼 schedular.development.js
+追程式碼
+scheduler.development.js
+react-dom.development.js
 
 閱讀源碼
 https://zhuanlan.zhihu.com/p/48254036
