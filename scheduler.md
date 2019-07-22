@@ -252,6 +252,9 @@ https://www.jishuwen.com/d/2I9l/zh-tw
 
 requestHostCallback 的功用是在瀏覽器的每一幀的剩餘空閒時間內執行優先度相對較低的任務，也就是再一次選取佇列中的第一個任務。(主要時間在幹嘛？)
 
+Scheduling in React
+https://philippspiess.com/scheduling-in-react/
+
 ## 在空閒時要做什麼？
 
 利用瀏覽器在每一幀繪製完成的空閒時間做事情，亦即使用 `requestIdleCallback pollyfill` 在空閒時間做事情。目前是使用 `requestAnimationFrame` + `MessageChannel` 實作了 `requestIdleCallback`。
@@ -271,6 +274,7 @@ requestHostCallback 的功用是在瀏覽器的每一幀的剩餘空閒時間內
 - [淺談 React Scheduler 任務管理](https://zhuanlan.zhihu.com/p/48254036)
 - [瀏覽器的 16ms 渲染幀](https://harttle.land/2017/08/15/browser-render-frame.html)
 - [scheduler 源碼分析](http://xzfyu.com/2019/01/15/react/react16%E6%BA%90%E7%A0%81/scheduler/)
+- [Inside Fiber: in-depth overview of the new reconciliation algorithm in React](https://medium.com/react-in-depth/inside-fiber-in-depth-overview-of-the-new-reconciliation-algorithm-in-react-e1c04700ef6e)
 
 <!--
 
